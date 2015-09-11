@@ -7,7 +7,7 @@ ODIR=obj
 LDIR=lib
 
 DEPS=$(SDIR)/%.h $(IDIR)/%.h
-LIBS=-lrtaudio
+LIBS=-lrtaudio -lmonome
 
 CFLAGS=-I$(IDIR) -L$(LDIR) -g
 

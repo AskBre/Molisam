@@ -85,7 +85,7 @@ void Sampler::record(const char sampleName) {
 	}
 }
 
-void Sampler::play(const char sampleName, const float sampleLengthInSec) {
+void Sampler::play(const char sampleName, const float sampleLengthInSec, const float samplePositionInSeconds) {
 	int i = getSampleIndex(sampleName);
 
 	if (i == -1) {
@@ -95,7 +95,10 @@ void Sampler::play(const char sampleName, const float sampleLengthInSec) {
 		cerr << "Can't play sample " << sampleName << " while recording" << endl;
 	} else {
 		float sampleLengthInFrames = sampleLengthInSec * SAMPLE_RATE;
+		float samplePositionInFrames = sampleLengthInFrames * SAMPLE_RATE;
+
 		audioData.samples[i].sampleLengthInFrames = sampleLengthInFrames;
+		audioData.samples[i].samplePositionInFrames = samplePositionInFrames;
 		audioData.samples[i].state = PLAY;
 	}
 }
