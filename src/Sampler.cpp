@@ -19,7 +19,11 @@ void Sampler::setup() {
 	oParams.deviceId = audio.getDefaultOutputDevice();
 	oParams.nChannels = 2;
 
+	cout << "Using device " << audio.getDeviceInfo(oParams.deviceId).name << endl;
+	cout << endl;
+
 	if(!(audioData.inBuffer = (double *) malloc (BUFFER_FRAMES * sizeof(double)))) {
+		cerr << "Couldn't allocate data" << endl;
 	}
 }
 
@@ -35,7 +39,7 @@ void Sampler::openStream() {
 		exit(0);
 	}
 
-	cout << "Audio stream opened" << endl;
+	cout << "Audio stream opened at device " << endl;
 }
 
 void Sampler::closeStream() {
@@ -51,15 +55,15 @@ void Sampler::closeStream() {
 }
 
 //----------------------------------------------------------------
-void Sampler::newSample(const char sampleName, const float sampleLengthInSec) {
-	if(getSampleIndex(sampleName) != -1) {
-		cerr << "Samplename " << (unsigned)sampleName << " already exists!" << endl;
+void Sampler::newSample(const char name, const float lengthInSec) {
+	if(getSampleIndex(name) != -1) {
+		cerr << "Samplename " << (unsigned)name << " already exists!" << endl;
 		return;
 	}
 
 	SamplerSample sample;
 
-	sample.name = sampleName;
+	sample.name = name;
 	sample.bufferSize = SAMPLE_RATE * 4; //<-------- Set static at 4 seconds
 	sample.sampleRate = SAMPLE_RATE;
 	sample.bufferFrames = BUFFER_FRAMES;
@@ -70,36 +74,39 @@ void Sampler::newSample(const char sampleName, const float sampleLengthInSec) {
 	}
 
 	audioData.samples.push_back(sample);
-	cout << "Added new sample " << (unsigned) sample.name << " of length " << sampleLengthInSec << endl;
+	cout << "Added new sample " << (unsigned) sample.name << " of length " << lengthInSec << endl;
 }
 
 //----------------------------------------------------------------
-void Sampler::record(const char sampleName) {
-	int i = getSampleIndex(sampleName);
+void Sampler::record(const char name) {
+	int i = getSampleIndex(name);
 
 	if (i == -1) {
-		cerr << "No sample found with name " << sampleName << endl;
+		cerr << "No sample found with name " << name << endl;
 		exit(0);
 	} else {
 		audioData.samples[i].state = REC;
+		cout << "Recording track " << name << endl;
 	}
 }
 
-void Sampler::play(const char sampleName, const float sampleLengthInSec, const float samplePositionInSeconds) {
-	int i = getSampleIndex(sampleName);
+void Sampler::play(const char name, const float lengthInSec, const float positionInSec) {
+	int i = getSampleIndex(name);
 
 	if (i == -1) {
-		cerr << "No sample found with name " << sampleName << endl;
+		cerr << "No sample found with name " << name << endl;
 		exit(0);
 	} else if (audioData.samples[i].state == REC) {
-		cerr << "Can't play sample " << sampleName << " while recording" << endl;
+		cerr << "Can't play sample " << name << " while recording" << endl;
 	} else {
-		float sampleLengthInFrames = sampleLengthInSec * SAMPLE_RATE;
-		float samplePositionInFrames = sampleLengthInFrames * SAMPLE_RATE;
+		float lengthInFrames = lengthInSec * SAMPLE_RATE;
+		float positionInFrames = positionInSec * SAMPLE_RATE;
 
-		audioData.samples[i].sampleLengthInFrames = sampleLengthInFrames;
-		audioData.samples[i].samplePositionInFrames = samplePositionInFrames;
+		audioData.samples[i].lengthInFrames = lengthInFrames;
+		audioData.samples[i].positionInFrames = positionInFrames;
 		audioData.samples[i].state = PLAY;
+
+		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
 	}
 }
 

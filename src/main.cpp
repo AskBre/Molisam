@@ -3,6 +3,7 @@
 
 int main() {
 	MonomeSampler monomeSampler;
+	monomeSampler.setup();
 	
 	return 0;
 }

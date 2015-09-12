@@ -23,10 +23,10 @@ class Sampler {
 		void openStream();
 		void closeStream();
 
-		void newSample(const char sampleName, const float sampleLengthInSec);
+		void newSample(const char name, const float lengthInSec);
 
-		void record(const char sampleName);
-		void play(const char sampleName, const float seconds);
+		void record(const char name);
+		void play(const char name, const float lengthInSec, const float positionInSec);
 
 		bool isRecorded(const char &name);
 		double getAmplitude();

@@ -17,9 +17,9 @@ void SamplerSample::record(double *inBuffer) {
 }
 
 void SamplerSample::play(double *outBuffer) {
-	iteration = samplePositionInFrames;
+	iteration = positionInFrames;
 
-	if(iteration < sampleLengthInFrames-bufferFrames) {
+	if(iteration < lengthInFrames-bufferFrames) {
 		for(unsigned i=0; i<bufferFrames*2; i+=2) {
 			unsigned j = iteration + (i/2);
 			outBuffer[i] += buffer[j] * 0.5;
