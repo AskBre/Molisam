@@ -9,27 +9,23 @@ void MonomeSampler::setup() {
 
 	sampler.openStream();
 
-	openMonome();
-
 	buttons.isPressed.resize(8);
-	buttons.isLight.resize(8);
-
-	for(int x=0; x<8; x++) {
-		buttons.isPressed[x].resize(8);
-		buttons.isLight[x].resize(8);
-		for(int y=0; y<8; y++) {
-			buttons.isPressed[x][y] = 0;
-			buttons.isLight[x][y] = 0;
-		}
+	for(unsigned i=0; i<buttons.isPressed.size(); i++) {
+		buttons.isPressed[i].resize(8);
 	}
+
+	cout << "Size " << buttons.isPressed.size() << " " << buttons.isPressed[0].size() << endl;
+
+	openMonome();
 
 	monome_register_handler(monome, MONOME_BUTTON_DOWN, pressHandler, static_cast<void*> (&buttons));
 	monome_register_handler(monome, MONOME_BUTTON_UP, releaseHandler, static_cast<void*> (&buttons));
 
+
 	while(1) {
 		if(monome_event_handle_next(monome)) {
-			for(int x=0; x<8; x++) {
-				for(int y=0; y<8; y++) {
+			for(unsigned x=0; x<8; x++) {
+				for(unsigned y=0; y<8; y++) {
 					if(buttons.isPressed[x][y]) {
 						monome_led_on(monome, x, y);
 					} else {
@@ -71,9 +67,5 @@ void MonomeSampler::pressHandler(const monome_event_t *e, void *user_data) {
 
 void MonomeSampler::releaseHandler(const monome_event_t *e, void *user_data) {
 	buttons_t *buttons = static_cast<buttons_t*> (user_data);
-	buttons->isPressed[e->grid.x][e->grid.y]= false;
-}
-
-void MonomeSampler::setLight(unsigned x, unsigned y) {
-	monome_led_on(monome, x, y);
+	buttons->isPressed[e->grid.x][e->grid.y] = false;
 }
