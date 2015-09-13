@@ -10,6 +10,7 @@ using namespace std;
 class SamplerSample {
 	public:
 		char name;
+		unsigned index;
 		state_t state = STOP;
 		unsigned rechead = 0;
 		unsigned playhead = 0;

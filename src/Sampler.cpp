@@ -82,6 +82,7 @@ void Sampler::newSample(const char name, const float lengthInSec) {
 //----------------------------------------------------------------
 void Sampler::record(const char name) {
 	int i = getSampleIndex(name);
+	audioData.samples[i].index = i;
 
 	if (i == -1) {
 		cerr << "No sample found with name " << name << endl;

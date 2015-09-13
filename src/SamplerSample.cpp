@@ -4,12 +4,15 @@ void SamplerSample::record(double *inBuffer) {
 	if(rechead < bufferSize-bufferFrames) {
 		for(unsigned i=0; i<bufferFrames*inChannels; i+=inChannels) {
 			unsigned j = rechead + (i/inChannels);
-
 			for(unsigned c=0; c<inChannels; c++) {
-				buffer[j] += inBuffer[i+c] * 0.5;
+				if(c == index) {
+					buffer[j] += inBuffer[i+c];
+					cout << "Recording index " << index << " on channel " << c << endl;
+				} else if (index > 3) {
+					buffer[j] += inBuffer[i+c] * 0.25;
+				}
 			}
 		}
-
 		rechead += bufferFrames;
 	} else {
 		state = STOP;
