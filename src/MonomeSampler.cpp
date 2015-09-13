@@ -27,8 +27,7 @@ void MonomeSampler::setup() {
 	monome_register_handler(monome, MONOME_BUTTON_UP, releaseHandler, static_cast<void*> (&buttons));
 
 	while(1) {
-		if(buttons.isNew) {
-			buttons.isNew = false;
+		if(monome_event_handle_next(monome)) {
 			for(int x=0; x<8; x++) {
 				for(int y=0; y<8; y++) {
 					if(buttons.isPressed[x][y]) {
@@ -39,8 +38,6 @@ void MonomeSampler::setup() {
 				}
 			}
 		}
-
-		monome_event_handle_next(monome);
 	}
 }
 
@@ -52,24 +49,28 @@ void MonomeSampler::openMonome() {
 
 	monome_set_rotation(monome, MONOME_ROTATE_0);
 
-	for(int x=0; x<8; x++) {
-		for(int y=0; y<8; y++) {
+	for(int y=0; y<8; y++) {
+		for(int x=0; x<8; x++) {
 			monome_led_on(monome, x, y);
 			usleep(10000);
+		}
+	}
+
+	for(int x=0; x<8; x++) {
+		for(int y=0; y<8; y++) {
 			monome_led_off(monome, x, y);
+			usleep(10000);
 		}
 	}
 }
 
 void MonomeSampler::pressHandler(const monome_event_t *e, void *user_data) {
 	buttons_t *buttons = static_cast<buttons_t*> (user_data);
-	buttons->isNew = true;
 	buttons->isPressed[e->grid.x][e->grid.y] = true;
 }
 
 void MonomeSampler::releaseHandler(const monome_event_t *e, void *user_data) {
 	buttons_t *buttons = static_cast<buttons_t*> (user_data);
-	buttons->isNew = true;
 	buttons->isPressed[e->grid.x][e->grid.y]= false;
 }
 

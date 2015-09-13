@@ -9,7 +9,6 @@
 using namespace std;
 
 struct buttons_t {
-	bool isNew;
 	vector< vector<bool>> isPressed;
 	vector< vector<bool>> isLight;
 };
