@@ -11,7 +11,8 @@ class SamplerSample {
 	public:
 		char name;
 		state_t state = STOP;
-		unsigned iteration = 0;
+		unsigned rechead = 0;
+		unsigned playhead = 0;
 
 		double *buffer;
 		unsigned bufferSize;

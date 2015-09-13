@@ -101,7 +101,7 @@ void Sampler::play(const char name, const float positionInSec) {
 	} else {
 		float positionInFrames = positionInSec * SAMPLE_RATE;
 
-		audioData.samples[i].iteration = positionInFrames;
+		audioData.samples[i].playhead = positionInFrames;
 		audioData.samples[i].state = PLAY;
 
 		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
@@ -127,12 +127,12 @@ state_t Sampler::getSampleState(const char &name) {
 
 float Sampler::getSamplePlayhead(const char &name) {
 	int i = getSampleIndex(name);
-	unsigned iteration = 0;
+	unsigned playheadInFrames = 0;
 	if (i == -1) cerr << "No sample found with name " << name << endl;
-	else iteration = audioData.samples.at(i).iteration;
+	else playheadInFrames = audioData.samples.at(i).playhead;
 
-	float playhead = (float)iteration/SAMPLE_RATE;
-	return playhead;
+	float playheadInSec= (float)playheadInFrames/SAMPLE_RATE;
+	return playheadInSec;
 }
 
 double Sampler::getAmplitude() {
