@@ -26,15 +26,19 @@ class Sampler {
 		void newSample(const char name, const float lengthInSec);
 
 		void record(const char name);
-		void play(const char name, const float lengthInSec, const float positionInSec);
+		void play(const char name, const float positionInSec);
+
 
 		bool isRecorded(const char &name);
+		state_t getSampleState(const char &name);
+		float getSamplePlayhead(const char &name);
 		double getAmplitude();
+
+		audioData_t audioData;
 
 	private:
 		int getSampleIndex(const char &name);
 
-		audioData_t audioData;
 
 		RtAudio audio;
 		RtAudio::StreamParameters iParams, oParams;

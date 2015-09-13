@@ -90,7 +90,7 @@ void Sampler::record(const char name) {
 	}
 }
 
-void Sampler::play(const char name, const float lengthInSec, const float positionInSec) {
+void Sampler::play(const char name, const float positionInSec) {
 	int i = getSampleIndex(name);
 
 	if (i == -1) {
@@ -99,11 +99,9 @@ void Sampler::play(const char name, const float lengthInSec, const float positio
 	} else if (audioData.samples[i].state == REC) {
 		cerr << "Can't play sample " << name << " while recording" << endl;
 	} else {
-		float lengthInFrames = lengthInSec * SAMPLE_RATE;
 		float positionInFrames = positionInSec * SAMPLE_RATE;
 
-		audioData.samples[i].lengthInFrames = lengthInFrames;
-		audioData.samples[i].positionInFrames = positionInFrames;
+		audioData.samples[i].iteration = positionInFrames;
 		audioData.samples[i].state = PLAY;
 
 		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
@@ -112,7 +110,29 @@ void Sampler::play(const char name, const float lengthInSec, const float positio
 
 //----------------------------------------------------------------
 bool Sampler::isRecorded(const char &name) {
-	return audioData.samples.at(getSampleIndex(name)).isRecorded;
+	int i = getSampleIndex(name);
+	if (i == -1) cerr << "No sample found with name " << name << endl;
+	else return audioData.samples.at(i).isRecorded;
+
+	return false;
+}
+
+state_t Sampler::getSampleState(const char &name) {
+	int i = getSampleIndex(name);
+	if (i == -1) cerr << "No sample found with name " << name << endl;
+	else return audioData.samples.at(i).state;
+
+	return STOP;
+}
+
+float Sampler::getSamplePlayhead(const char &name) {
+	int i = getSampleIndex(name);
+	unsigned iteration = 0;
+	if (i == -1) cerr << "No sample found with name " << name << endl;
+	else iteration = audioData.samples.at(i).iteration;
+
+	float playhead = (float)iteration/SAMPLE_RATE;
+	return playhead;
 }
 
 double Sampler::getAmplitude() {

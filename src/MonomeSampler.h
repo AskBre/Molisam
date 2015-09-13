@@ -10,6 +10,8 @@ using namespace std;
 
 struct buttons_t {
 	vector<vector<bool>> isPressed;
+	vector<vector<bool>> isLight;
+	vector<vector<bool>> oldLights;
 };
 
 class MonomeSampler {
@@ -21,6 +23,7 @@ class MonomeSampler {
 
 	private:
 		void openMonome();
+		void updateLights();
 
 		static void pressHandler(const monome_event_t *e, void *user_data);
 		static void releaseHandler(const monome_event_t *e, void *user_data);
@@ -29,5 +32,4 @@ class MonomeSampler {
 		Sampler sampler;
 
 		buttons_t buttons;
-
 };

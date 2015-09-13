@@ -17,7 +17,6 @@ class SamplerSample {
 		unsigned bufferSize;
 		unsigned sampleRate;
 		unsigned bufferFrames;
-		float lengthInFrames;
 		float positionInFrames;
 		bool isRecorded = false;
 
