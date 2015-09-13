@@ -18,6 +18,8 @@ class SamplerSample {
 		unsigned bufferSize;
 		unsigned sampleRate;
 		unsigned bufferFrames;
+		unsigned inChannels;
+		unsigned outChannels;
 		float positionInFrames;
 		bool isRecorded = false;
 

@@ -2,11 +2,14 @@
 
 void SamplerSample::record(double *inBuffer) {
 	if(rechead < bufferSize-bufferFrames) {
-		for(unsigned i=0; i<bufferFrames*2; i+=2) {
-			unsigned j = rechead + (i/2);
-			buffer[j] = inBuffer[i];
-			buffer[j+1] = inBuffer[i+1];
+		for(unsigned i=0; i<bufferFrames*inChannels; i+=inChannels) {
+			unsigned j = rechead + (i/inChannels);
+
+			for(unsigned c=0; c<inChannels; c++) {
+				buffer[j] += inBuffer[i+c] * 0.5;
+			}
 		}
+
 		rechead += bufferFrames;
 	} else {
 		state = STOP;
@@ -18,10 +21,11 @@ void SamplerSample::record(double *inBuffer) {
 
 void SamplerSample::play(double *outBuffer) {
 	if(playhead < bufferSize-bufferFrames) {
-		for(unsigned i=0; i<bufferFrames*2; i+=2) {
-			unsigned j = playhead + (i/2);
-			outBuffer[i] += buffer[j] * 0.5;
-			outBuffer[i+1] += buffer[j+1] * 0.5;
+		for(unsigned i=0; i<bufferFrames*outChannels; i+=outChannels) {
+			unsigned j = playhead + (i/outChannels);
+			for(unsigned c=0; c<outChannels; c++) {
+				outBuffer[i+c] += buffer[j] * 0.5;
+			}
 		}
 		playhead += bufferFrames;
 	} else {

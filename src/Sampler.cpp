@@ -14,10 +14,10 @@ void Sampler::setup() {
 	cout << endl;
 
 	iParams.deviceId = audio.getDefaultInputDevice();
-	iParams.nChannels = 2;
+	iParams.nChannels = IN_CHANNELS;
 
 	oParams.deviceId = audio.getDefaultOutputDevice();
-	oParams.nChannels = 2;
+	oParams.nChannels = OUT_CHANNELS;
 
 	cout << "Using device " << audio.getDeviceInfo(oParams.deviceId).name << endl;
 	cout << endl;
@@ -67,8 +67,10 @@ void Sampler::newSample(const char name, const float lengthInSec) {
 	sample.bufferSize = SAMPLE_RATE * 4; //<-------- Set static at 4 seconds
 	sample.sampleRate = SAMPLE_RATE;
 	sample.bufferFrames = BUFFER_FRAMES;
+	sample.inChannels = IN_CHANNELS;
+	sample.outChannels = OUT_CHANNELS;
 
-	if(!(sample.buffer = (double *) malloc (sample.bufferSize * sizeof(double)))) {
+	if(!(sample.buffer = (double *) malloc (sample.bufferSize * sizeof(double) * IN_CHANNELS))) {
 		cerr << "Failed to allocate memory" << endl;
 		exit(0);
 	}

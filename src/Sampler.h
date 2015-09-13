@@ -9,6 +9,8 @@
 
 #define SAMPLE_RATE 48000
 #define BUFFER_FRAMES 256
+#define IN_CHANNELS 4
+#define OUT_CHANNELS 2
 
 using namespace std;
 
