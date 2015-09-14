@@ -59,28 +59,42 @@ void MonomeSampler::setup() {
 						} else if (y==6) {
 							sampler.record(x);
 						} else if (y==7) {
-							if(counter - buttonTracks[x].prevCount > 100) {
+							if(!buttonTracks[x].isPressed) {
 								switch(buttonTracks[x].state) {
 									case STOP:
 										buttonTracks[x].state = REC;
-										buttonTracks[x].prevCount = counter;
+										buttonTracks[x].isPressed = true;
 										break;
 									case PLAY:
 										buttonTracks[x].state = IDLE;
-										buttonTracks[x].prevCount = counter;
+										buttonTracks[x].isPressed = true;
 										break;
 									case REC:
 										buttonTracks[x].state = IDLE;
-										buttonTracks[x].prevCount = counter;
+										buttonTracks[x].isPressed = true;
 										break;
 									case IDLE:
 										buttonTracks[x].state = PLAY;
-										buttonTracks[x].prevCount = counter;
+										buttonTracks[x].isPressed = true;
 										break;
 									default:
 										break;
 								}
 							}
+							buttonTracks[x].counter++;
+						}
+					}
+
+					// Delete buttontrack if held down
+					if (y==7) {
+						if(buttonTracks[x].counter > 100) {
+							cout << "DELETE" << endl;
+							unsigned long tmpCounter = buttonTracks[x].counter;
+							buttonTracks[x] = buttonTrack_t();
+							buttonTracks[x].isPressed = true;
+						} else if (not isPressed) {
+							buttonTracks[x].counter = 0;
+							buttonTracks[x].isPressed = false;
 						}
 					}
 				}
@@ -131,6 +145,7 @@ void MonomeSampler::updateLights() {
 				else buttons.isLight[x][y] = false;
 			}
 
+			// Sample recording
 			if(y==6) {
 				switch(sampler.getSampleState(x)) {
 					case STOP:
@@ -140,6 +155,7 @@ void MonomeSampler::updateLights() {
 						buttonBlink(x, y, recBlinkSpeed);
 						break;
 					case PLAY:
+						break;
 					case IDLE:
 						buttons.isLight[x][y] = true;
 						break;
@@ -148,6 +164,7 @@ void MonomeSampler::updateLights() {
 				}
 			}
 
+			// Button recording
 			if(y==7) {
 				switch(buttonTracks[x].state) {
 					case STOP:

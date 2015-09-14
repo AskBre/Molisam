@@ -9,7 +9,8 @@
 using namespace std;
 
 struct buttonTrack_t {
-	unsigned long prevCount;
+	unsigned long isPressed;
+	unsigned long counter = 0;
 	state_t state = STOP;
 	unsigned playhead = 0;
 	vector<vector<vector<bool>>> wasPressed;

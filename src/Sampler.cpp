@@ -107,7 +107,7 @@ void Sampler::play(const char name, const float positionInSec) {
 		audioData.samples[i].playhead = positionInFrames;
 		audioData.samples[i].state = PLAY;
 
-		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
+//		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
 	}
 }
 
