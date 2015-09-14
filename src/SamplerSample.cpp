@@ -7,7 +7,6 @@ void SamplerSample::record(double *inBuffer) {
 			for(unsigned c=0; c<inChannels; c++) {
 				if(c == index) {
 					buffer[j] += inBuffer[i+c];
-					cout << "Recording index " << index << " on channel " << c << endl;
 				} else if (index > 3) {
 					buffer[j] += inBuffer[i+c] * 0.25;
 				}
@@ -15,7 +14,7 @@ void SamplerSample::record(double *inBuffer) {
 		}
 		rechead += bufferFrames;
 	} else {
-		state = STOP;
+		state = IDLE;
 		rechead = 0;
 		isRecorded = true;
 	}
@@ -32,7 +31,11 @@ void SamplerSample::play(double *outBuffer) {
 		}
 		playhead += bufferFrames;
 	} else {
-		state = STOP;
+		if(!isRecorded) {
+			state = STOP;
+		} else {
+			state = IDLE;
+		}
 		playhead = 0;
 	}
 }

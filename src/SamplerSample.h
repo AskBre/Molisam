@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string.h>
 
-enum state_t {STOP, REC, PLAY};
+enum state_t {STOP, REC, PLAY, IDLE};
 
 using namespace std;
 

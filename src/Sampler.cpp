@@ -180,9 +180,9 @@ int recAndPlay( void *outputBuffer, void *inputBuffer, unsigned int nBufferFrame
 		} else if (sample.state == PLAY) {
 			sample.play(outBuffer);
 		} else if (sample.state == STOP) {
+		} else if (sample.state == IDLE) {
 		} else {
 			cerr << "Couldn't get state from sample" << endl;
-			exit(0);
 		}
 	}
 	return 0;
