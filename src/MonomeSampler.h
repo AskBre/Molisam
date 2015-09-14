@@ -48,5 +48,5 @@ class MonomeSampler {
 
 		buttons_t buttons;
 
-		vector<buttonTrack_t> buttonTrack;
+		vector<buttonTrack_t> buttonTracks;
 };

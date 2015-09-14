@@ -20,7 +20,7 @@ void MonomeSampler::setup() {
 		buttons.oldLights[i].resize(8);
 	}
 
-	buttonTrack.resize(8);
+	buttonTracks.resize(8);
 
 	openMonome();
 
@@ -38,32 +38,44 @@ void MonomeSampler::setup() {
 			for(unsigned x=0; x<8; x++) {
 				for(unsigned y=0; y<8; y++) {
 					bool isPressed = buttons.isPressed[x][y];
-					bool wasPressed = (y<6 and buttons.wasPressed[x][y]);
+					bool wasPressed = false;
 
-					if(isPressed or wasPressed) {
+					if(y<6) {
+						for(auto &track : buttonTracks) {
+							if(track.state == PLAY) {
+								if(track.wasPressed[track.playhead][x][y]) {
+									wasPressed = true;
+									float p = ((float)sampleLength/8) * x;
+									sampler.play(y, p);
+								}
+							}
+						}
+					}
+
+					if(isPressed) {
 						if(y<6) {
-							float p = ((float)sampleLength/8)*x;
+							float p = ((float)sampleLength/8) * x;
 							sampler.play(y, p);
 						} else if (y==6) {
 							sampler.record(x);
 						} else if (y==7) {
-							if(counter - buttonTrack[x].prevCount > 100) {
-								switch(buttonTrack[x].state) {
+							if(counter - buttonTracks[x].prevCount > 100) {
+								switch(buttonTracks[x].state) {
 									case STOP:
-										buttonTrack[x].state = REC;
-										buttonTrack[x].prevCount = counter;
+										buttonTracks[x].state = REC;
+										buttonTracks[x].prevCount = counter;
 										break;
 									case PLAY:
-										buttonTrack[x].state = IDLE;
-										buttonTrack[x].prevCount = counter;
+										buttonTracks[x].state = IDLE;
+										buttonTracks[x].prevCount = counter;
 										break;
 									case REC:
-										buttonTrack[x].state = IDLE;
-										buttonTrack[x].prevCount = counter;
+										buttonTracks[x].state = IDLE;
+										buttonTracks[x].prevCount = counter;
 										break;
 									case IDLE:
-										buttonTrack[x].state = PLAY;
-										buttonTrack[x].prevCount = counter;
+										buttonTracks[x].state = PLAY;
+										buttonTracks[x].prevCount = counter;
 										break;
 									default:
 										break;
@@ -90,14 +102,14 @@ void MonomeSampler::openMonome() {
 	for(int y=0; y<8; y++) {
 		for(int x=0; x<8; x++) {
 			monome_led_on(monome, x, y);
-			usleep(10000);
+			usleep(1000);
 		}
 	}
 
 	for(int x=0; x<8; x++) {
 		for(int y=0; y<8; y++) {
 			monome_led_off(monome, x, y);
-			usleep(10000);
+			usleep(1000);
 		}
 	}
 }
@@ -137,7 +149,7 @@ void MonomeSampler::updateLights() {
 			}
 
 			if(y==7) {
-				switch(buttonTrack[x].state) {
+				switch(buttonTracks[x].state) {
 					case STOP:
 						buttons.isLight[x][y] = false;
 						break;
@@ -146,6 +158,7 @@ void MonomeSampler::updateLights() {
 						break;
 					case PLAY:
 						buttonBlink(x, y, playBlinkSpeed);
+						break;
 					case IDLE:
 						buttons.isLight[x][y] = true;
 						break;
@@ -174,7 +187,7 @@ void MonomeSampler::buttonBlink(unsigned x, unsigned y, unsigned speed) {
 }
 
 void MonomeSampler::updateButtonRecord() {
-	for(auto &track : buttonTrack) {
+	for(auto &track : buttonTracks) {
 		switch(track.state) {
 			case STOP:
 				break;
@@ -185,8 +198,7 @@ void MonomeSampler::updateButtonRecord() {
 				track.wasPressed.push_back(buttons.isPressed);
 				break;
 			case PLAY:
-				if(track.playhead < track.wasPressed.size()) {
-					buttons.wasPressed = track.wasPressed[track.playhead];
+				if(track.playhead < track.wasPressed.size()-1) {
 					track.playhead++;
 				} else {
 					track.playhead = 0;
