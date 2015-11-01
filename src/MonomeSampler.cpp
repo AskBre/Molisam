@@ -1,5 +1,4 @@
 #include "MonomeSampler.h"
-
 void MonomeSampler::setup() {
 	sampler.setup();
 
@@ -116,14 +115,14 @@ void MonomeSampler::openMonome() {
 	for(int y=0; y<8; y++) {
 		for(int x=0; x<8; x++) {
 			monome_led_on(monome, x, y);
-			usleep(1000);
+			usleep(10000);
 		}
 	}
 
 	for(int x=0; x<8; x++) {
 		for(int y=0; y<8; y++) {
 			monome_led_off(monome, x, y);
-			usleep(1000);
+			usleep(10000);
 		}
 	}
 }

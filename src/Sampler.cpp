@@ -84,6 +84,8 @@ void Sampler::record(const char name) {
 	int i = getSampleIndex(name);
 	audioData.samples[i].index = i;
 
+	memset(audioData.samples[i].buffer, 0, audioData.samples[i].bufferSize * sizeof(double) * IN_CHANNELS);
+
 	if (i == -1) {
 		cerr << "No sample found with name " << name << endl;
 		exit(0);

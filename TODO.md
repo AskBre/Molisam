@@ -2,9 +2,7 @@
 
 [DONE]Set recording to blinking on both mic and buttons
 
-Erase button recording when held down for two seconds
-
-Stop playing back sample when button is released
+[DONE] Erase button recording when held down for two seconds
 
 [DONE] Merge the tracks when playing back from wasPressed
 
