@@ -14,6 +14,11 @@ class SamplerSample {
 		state_t state = STOP;
 		unsigned rechead = 0;
 		unsigned playhead = 0;
+		unsigned pPlayhead = 0;
+
+		bool isFade = false;
+		bool isFadeDown = true;
+		float fadeVol = 1;
 
 		double *buffer;
 		unsigned bufferSize;
@@ -26,5 +31,5 @@ class SamplerSample {
 
 		void record(double *inBuffer);
 		void play(double *outBuffer);
-		void stop();
+		void fade();
 };

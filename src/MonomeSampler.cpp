@@ -69,7 +69,7 @@ void MonomeSampler::setup() {
 										buttonTracks[x].isPressed = true;
 										break;
 									case REC:
-										buttonTracks[x].state = IDLE;
+										buttonTracks[x].state = PLAY;
 										buttonTracks[x].isPressed = true;
 										break;
 									case IDLE:

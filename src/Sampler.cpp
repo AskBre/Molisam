@@ -111,6 +111,8 @@ void Sampler::play(const char name, const float positionInSec) {
 		audioData.samples[i].playhead = positionInFrames;
 		audioData.samples[i].positionInFrames = positionInFrames;
 		audioData.samples[i].state = PLAY;
+		audioData.samples[i].isFade = true;
+		audioData.samples[i].isFadeDown = true;
 
 //		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
 	}
