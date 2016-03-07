@@ -9,7 +9,7 @@ LDIR=lib
 DEPS=$(SDIR)/%.h $(IDIR)/%.h
 LIBS=-lrtaudio -lmonome -pthread
 
-CFLAGS=-I$(IDIR) -L$(LDIR) -g
+CFLAGS=-I$(IDIR) -L$(LDIR) -ggdb3
 
 $(ODIR)/%.o:$(SDIR)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
@@ -19,3 +19,6 @@ main:$(OBJ)
 
 run:
 	./main
+
+clean:
+	rm main
