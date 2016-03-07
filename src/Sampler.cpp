@@ -84,13 +84,17 @@ void Sampler::record(const char name) {
 	int i = getSampleIndex(name);
 	audioData.samples[i].index = i;
 
-	memset(audioData.samples[i].buffer, 0, audioData.samples[i].bufferSize * sizeof(double) * IN_CHANNELS);
+	if(audioData.samples[i].state == REC) {
+		return;
+	}
 
 	if (i == -1) {
 		cerr << "No sample found with name " << name << endl;
 		exit(0);
 	} else {
 		audioData.samples[i].state = REC;
+		audioData.samples[i].rechead = 0;
+
 		cout << "Recording track " << name << endl;
 	}
 }
@@ -101,12 +105,11 @@ void Sampler::play(const char name, const float positionInSec) {
 	if (i == -1) {
 		cerr << "No sample found with name " << name << endl;
 		exit(0);
-	} else if (audioData.samples[i].state == REC) {
-		cerr << "Can't play sample " << name << " while recording" << endl;
 	} else {
 		float positionInFrames = positionInSec * SAMPLE_RATE;
 
 		audioData.samples[i].playhead = positionInFrames;
+		audioData.samples[i].positionInFrames = positionInFrames;
 		audioData.samples[i].state = PLAY;
 
 //		cout << "Playing track " << name  << " of length " << audioData.samples[i].bufferSize << " from position " << positionInFrames << endl;
@@ -136,7 +139,7 @@ float Sampler::getSamplePlayhead(const char &name) {
 	if (i == -1) cerr << "No sample found with name " << name << endl;
 	else playheadInFrames = audioData.samples.at(i).playhead;
 
-	float playheadInSec= (float)playheadInFrames/SAMPLE_RATE;
+	float playheadInSec = (float)playheadInFrames/SAMPLE_RATE;
 	return playheadInSec;
 }
 
@@ -172,7 +175,7 @@ int recAndPlay( void *outputBuffer, void *inputBuffer, unsigned int nBufferFrame
 	double *outBuffer = static_cast<double*> (outputBuffer);
 	audioData->inBuffer = inBuffer;
 
-	memset(outputBuffer, 0, nBufferFrames * 2 * sizeof(double));
+	memset(outputBuffer, 0, nBufferFrames * OUT_CHANNELS * sizeof(double));
 
 	if (status) cerr << "Stream overflow detected!" << endl;
 
