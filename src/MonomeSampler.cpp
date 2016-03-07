@@ -115,7 +115,7 @@ void MonomeSampler::openMonome() {
 	for(int y=0; y<8; y++) {
 		for(int x=0; x<8; x++) {
 			monome_led_on(monome, x, y);
-			usleep(10000);
+			usleep(1000);
 		}
 	}
 
@@ -197,8 +197,8 @@ void MonomeSampler::updateLights() {
 void MonomeSampler::buttonBlink(unsigned x, unsigned y, unsigned speed) {
 	if(counter%speed == 0) {
 		buttons.isLight[x][y] = true;
-		cout << "True" << endl;
 	}
+
 	else if (counter%speed == speed/2) buttons.isLight[x][y] = false;
 }
 
