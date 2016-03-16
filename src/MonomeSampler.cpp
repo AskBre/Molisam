@@ -134,13 +134,15 @@ void MonomeSampler::updateLights() {
 			if(y < 6) {
 				if(sampler.getSampleState(y) == PLAY) {
 					float playhead = sampler.getSamplePlayhead(y);
-					unsigned p = (playhead/sampleLength)*sampleCount;
+					float p = (playhead/sampleLength)*sampleCount;
+					float a = sampleLength * 0.01;
 
 					for(unsigned _x=0; _x<8; _x++) {
 						buttons.isLight[_x][y] = false;
 					}
 
-					buttons.isLight[p][y] = true;
+					// It doesn't really go up to 8, so needs a bit of help on the way
+					if((p+a) < 8) buttons.isLight[p][y] = true;
 				}
 				else buttons.isLight[x][y] = false;
 			}
