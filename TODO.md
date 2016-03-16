@@ -22,6 +22,6 @@ Second page with user interface
 	Playtype
 	Etc.
 
-Reset playhead to 0 when done playing button recordings
+[DONE] Reset playhead to 0 when done playing button recordings
 
 Sample recording are two too big

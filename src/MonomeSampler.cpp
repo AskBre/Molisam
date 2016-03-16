@@ -66,6 +66,7 @@ void MonomeSampler::setup() {
 										break;
 									case PLAY:
 										buttonTracks[x].state = IDLE;
+										buttonTracks[x].playhead = 0;
 										buttonTracks[x].isPressed = true;
 										break;
 									case REC:
@@ -80,19 +81,19 @@ void MonomeSampler::setup() {
 										break;
 								}
 							}
-							buttonTracks[x].counter++;
+							buttonTracks[x].timeHeld++;
 						}
 					}
 
 					// Delete buttontrack if held down
 					if (y==7) {
-						if(buttonTracks[x].counter > 100) {
+						if(buttonTracks[x].timeHeld > 100) {
 							cout << "DELETE" << endl;
-							unsigned long tmpCounter = buttonTracks[x].counter;
+							unsigned long tmpCounter = buttonTracks[x].timeHeld;
 							buttonTracks[x] = buttonTrack_t();
 							buttonTracks[x].isPressed = true;
 						} else if (not isPressed) {
-							buttonTracks[x].counter = 0;
+							buttonTracks[x].timeHeld = 0;
 							buttonTracks[x].isPressed = false;
 						}
 					}
