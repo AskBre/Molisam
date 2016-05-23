@@ -87,7 +87,7 @@ void MonomeSampler::setup() {
 
 					// Delete buttontrack if held down
 					if (y==7) {
-						if(buttonTracks[x].timeHeld > 100) {
+						if(buttonTracks[x].timeHeld > 10000) {
 							cout << "DELETE" << endl;
 							unsigned long tmpCounter = buttonTracks[x].timeHeld;
 							buttonTracks[x] = buttonTrack_t();
@@ -100,7 +100,7 @@ void MonomeSampler::setup() {
 				}
 			}
 //		}
-		usleep(10000);
+		usleep(1);
 		counter++;
 	}
 }

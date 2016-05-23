@@ -41,8 +41,8 @@ class MonomeSampler {
 
 		unsigned long counter;
 
-		const unsigned recBlinkSpeed = 100;
-		const unsigned playBlinkSpeed= 50;
+		const unsigned recBlinkSpeed = 10000;
+		const unsigned playBlinkSpeed= 5000;
 
 		monome_t *monome;
 		Sampler sampler;
