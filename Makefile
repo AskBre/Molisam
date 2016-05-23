@@ -2,9 +2,9 @@ CC=clang++ -std=c++11
 OBJ=src/main.cpp src/MonomeSampler.cpp src/Sampler.cpp src/SamplerSample.cpp
 
 SDIR=src
-IDIR=include
+IDIR=/usr/include/rtaudio
 ODIR=obj
-LDIR=lib
+LDIR=/usr/local/lib
 
 DEPS=$(SDIR)/%.h $(IDIR)/%.h
 LIBS=-lrtaudio -lmonome -pthread
