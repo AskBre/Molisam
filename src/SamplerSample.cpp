@@ -16,7 +16,7 @@ void SamplerSample::record(double *inBuffer) {
 
 void SamplerSample::play(double *outBuffer) {
 	if(playhead < bufferSize-bufferFrames) {
-		float fStop = positionInFrames + ((bufferSize-bufferFrames) / 4);
+		float fStop = positionInFrames + ((bufferSize-bufferFrames) / 8);
 		if(playhead < fStop) {
 			for(unsigned i=0; i<bufferFrames*outChannels; i+=outChannels) {
 				unsigned j = playhead + (i/outChannels);
