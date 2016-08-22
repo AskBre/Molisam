@@ -7,7 +7,7 @@ ODIR=obj
 LDIR=/usr/local/lib
 
 DEPS=$(SDIR)/%.h $(IDIR)/%.h
-LIBS=-lrtaudio -lmonome -pthread
+LIBS=-lrtaudio -lmonome
 
 CFLAGS=-I$(IDIR) -L$(LDIR) -ggdb3
 
