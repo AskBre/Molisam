@@ -9,16 +9,21 @@ LDIR=/usr/local/lib
 DEPS=$(SDIR)/%.h $(IDIR)/%.h
 LIBS=-lrtaudio -lmonome
 
-CFLAGS=-I$(IDIR) -L$(LDIR) -ggdb3
+CFLAGS=-I$(IDIR) -L$(LDIR)
+
+all: Molisam
+
+debug: CFLAGS+=-ggdb3 -Wall
+debug: Molisam
 
 $(ODIR)/%.o:$(SDIR)/%.cpp $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-main:$(OBJ)
+Molisam:$(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 run:
-	./main
+	./Molisam
 
 clean:
 	rm main
