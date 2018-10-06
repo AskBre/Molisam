@@ -11,6 +11,7 @@
 #define BUFFER_FRAMES 256
 #define IN_CHANNELS 1
 #define OUT_CHANNELS 1
+#define THRESHOLD 0.09
 
 using namespace std;
 

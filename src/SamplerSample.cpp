@@ -1,16 +1,25 @@
 #include "SamplerSample.h"
 
 void SamplerSample::record(double *inBuffer) {
-	if(rechead < bufferSize-bufferFrames) {
-		for(unsigned i=0; i<bufferFrames*inChannels; i+=inChannels) {
-			unsigned j = rechead + (i/inChannels);
-			buffer[j] = inBuffer[i];
-		}
-		rechead += bufferFrames;
+	if(getAmplitude(inBuffer) > threshold) {
+		state = REC;
 	} else {
-		state = IDLE;
-		rechead = 0;
-		isRecorded = true;
+		cout << "amp is " << getAmplitude(inBuffer) << endl;;
+	}
+
+	if(state == REC) {
+		cout << "Recording track " << name << endl;
+		if(rechead < bufferSize-bufferFrames) {
+			for(unsigned i=0; i<bufferFrames*inChannels; i+=inChannels) {
+				unsigned j = rechead + (i/inChannels);
+				buffer[j] = inBuffer[i];
+			}
+			rechead += bufferFrames;
+		} else {
+			state = IDLE;
+			rechead = 0;
+			isRecorded = true;
+		}
 	}
 }
 
@@ -61,3 +70,14 @@ void SamplerSample::fade() {
 		}
 	}
 }
+
+double SamplerSample::getAmplitude(double *inBuffer) {
+
+	double amp = 0;
+	for(int i=0; i<bufferFrames; i++) {
+		if(inBuffer[i] > amp) amp = inBuffer[i];
+	}
+
+	return amp;
+}
+

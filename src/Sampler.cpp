@@ -69,6 +69,7 @@ void Sampler::newSample(const char name, const float lengthInSec) {
 	sample.bufferFrames = BUFFER_FRAMES;
 	sample.inChannels = IN_CHANNELS;
 	sample.outChannels = OUT_CHANNELS;
+	sample.threshold = THRESHOLD;
 
 	if(!(sample.buffer = (double *) malloc (sample.bufferSize * sizeof(double) * IN_CHANNELS))) {
 		cerr << "Failed to allocate memory" << endl;
@@ -84,7 +85,7 @@ void Sampler::record(const char name) {
 	int i = getSampleIndex(name);
 	audioData.samples[i].index = i;
 
-	if(audioData.samples[i].state == REC) {
+	if(audioData.samples[i].state == PRIMED) {
 		return;
 	}
 
@@ -92,10 +93,10 @@ void Sampler::record(const char name) {
 		cerr << "No sample found with name " << name << endl;
 		exit(0);
 	} else {
-		audioData.samples[i].state = REC;
+		audioData.samples[i].state = PRIMED;
 		audioData.samples[i].rechead = 0;
 
-		cout << "Recording track " << name << endl;
+		cout << "Primed track " << name << endl;
 	}
 }
 
@@ -188,6 +189,8 @@ int recAndPlay( void *outputBuffer, void *inputBuffer, unsigned int nBufferFrame
 			sample.play(outBuffer);
 		} else if (sample.state == STOP) {
 		} else if (sample.state == IDLE) {
+		} else if (sample.state == PRIMED) {
+			sample.record(inBuffer);
 		} else {
 			cerr << "Couldn't get state from sample" << endl;
 		}

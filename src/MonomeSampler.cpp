@@ -61,7 +61,7 @@ void MonomeSampler::setup() {
 							if(!buttonTracks[x].isPressed) {
 								switch(buttonTracks[x].state) {
 									case STOP:
-										buttonTracks[x].state = REC;
+										buttonTracks[x].state = PRIMED;
 										buttonTracks[x].isPressed = true;
 										break;
 									case PLAY:
@@ -76,7 +76,11 @@ void MonomeSampler::setup() {
 									case IDLE:
 										buttonTracks[x].state = PLAY;
 										buttonTracks[x].isPressed = true;
-										break;
+									case PRIMED:
+										buttonTracks[x].state = REC;
+										buttonTracks[x].isPressed = true;
+									break;
+break;
 									default:
 										break;
 								}
@@ -160,6 +164,9 @@ void MonomeSampler::updateLights() {
 						break;
 					case IDLE:
 						buttons.isLight[x][y] = true;
+						break;
+					case PRIMED:
+						buttonBlink(x, y, primedBlinkSpeed);
 						break;
 					default:
 						break;

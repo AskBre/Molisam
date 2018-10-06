@@ -14,7 +14,7 @@
 
 Play for as long as held?
 
-Trigger recording only when volume above threshold
+[DONE] Trigger recording only when volume above threshold
 
 Second page with user interface
 	Volumes across channels

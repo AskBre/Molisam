@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string.h>
 
-enum state_t {STOP, REC, PLAY, IDLE};
+enum state_t {STOP, REC, PLAY, IDLE, PRIMED};
 
 using namespace std;
 
@@ -26,10 +26,14 @@ class SamplerSample {
 		unsigned bufferFrames;
 		unsigned inChannels;
 		unsigned outChannels;
+		double threshold;
+
 		float positionInFrames;
 		bool isRecorded = false;
 
 		void record(double *inBuffer);
 		void play(double *outBuffer);
 		void fade();
+
+		double getAmplitude(double *inBuffer);
 };
